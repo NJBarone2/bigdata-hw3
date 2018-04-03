@@ -24,6 +24,9 @@ In Figure 1, mean weight for each recorded species is plotted over individual ye
 ```{r, fig1, warning=FALSE, echo = FALSE, message=FALSE, fig.width = 7, fig.asp = .6, fig.align = "center", fig.pos = 'h', fig.cap = "Interspecific mean weight over time."}
 
 # Load necessary libraries
+
+
+
 library(tidyverse)
 library(directlabels)
 
@@ -87,3 +90,40 @@ ggplot(data = yearly_sex_weight, aes(x = year, y = avg_weight, color = species_i
 So there are interspecific differences in mean weight over time. What of intraspecific variance? Males and females for many terrestrial species vary greatly in weight, but what does the data say about intraspecies resilience?
 
 In Figure 2, mean weight was separated out by sex. The authors found that the same species which exhibited interspecific variance, NL, DS, and SH, also exhibited major swings in average weight between males and females. In NL, males were more vulnurable to weight changes, and were faster to gain or lose weight than females. The same can be said for DS and SH. Whether this vulnurability is physiological or behavioral, that is, males willingly forgoing food and giving it to females, is conjecture without further information.
+
+
+```{r}
+
+Differences between Weight and Sex over Time
+
+# Libraries loaded
+library(tidyverse)
+library(directlabels)
+
+# CSV file data imported 
+surveys_complete <- read_csv("data_output/surveys_complete.csv")
+
+# Average weights of sexes of species_id by year stored
+
+yearly_sex_weight <- surveys_complete %>%
+  group_by(year, sex, species_id) %>%
+  summarize(avg_weight = mean(weight))
+
+# Weight-comparison plot with sexes split rendered
+
+ggplot(data = yearly_sex_weight, aes(x = year, y = avg_weight, color = species_id)) +
+  geom_line(size = 1.5, alpha = 0.5) +
+  facet_grid(sex ~ .) +
+  geom_dl(aes(label = species_id), method = list(dl.trans(x = x + 0.1), "last.points"), cex = 0.1) +
+  theme_grey(base_family = "") +
+  theme(axis.text.x = element_text(size = 11, angle = 0),
+        axis.text.y = element_text(size = 11, angle = 0),
+        text = element_text(size = 11),
+        legend.position = "none") +
+  labs(x = "Year",
+       y = "Weight")
+
+In Figure 2 above, there are interspecific differences (alterations existing or occurring between different species).  The main differences exist between mean weight over time.  In this case, the sex (male and females) mean weight is going to differ greatly.  Intraspecific differences (arising or occurring within a species) may not differ as much.    
+
+Weight and sex are separated into two categories in Figure 2.  NL, DS, and SH each displayed great amounts of variance in average weight between sex.  NL males had larger weight changes.  In addition, males gained weight over time in greater fashion than females.  Females still gained weight in a linear fashion, but at a much slower rate.  Similar results occurred for both DS and SH.       
+```
