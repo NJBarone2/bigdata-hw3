@@ -87,3 +87,37 @@ ggplot(data = yearly_sex_weight, aes(x = year, y = avg_weight, color = species_i
 So there are interspecific differences in mean weight over time. What of intraspecific variance? Males and females for many terrestrial species vary greatly in weight, but what does the data say about intraspecies resilience?
 
 In Figure 2, mean weight was separated out by sex. The authors found that the same species which exhibited interspecific variance, NL, DS, and SH, also exhibited major swings in average weight between males and females. In NL, males were more vulnurable to weight changes, and were faster to gain or lose weight than females. The same can be said for DS and SH. Whether this vulnurability is physiological or behavioral, that is, males willingly forgoing food and giving it to females, is conjecture without further information.
+
+
+```{r}
+
+# The third would give the number of counts of a species over time, which could tell us when the animals were in the area
+# Load lib
+library(tidyverse)
+library(directlabels)
+
+# Import data
+surveys_complete <- read_csv("data_output/surveys_complete.csv")
+
+# Store the number of counts of a species over time 
+
+yearly_counts <- surveys_complete %>%
+  group_by(counts, species_id) %>%
+  summarize(time = mean(time))
+
+# Render a plotting counts versus time
+
+ggplot(data = yearly_counts, aes(x = counts, y = yearly_counts, color = species_id)) +
+  geom_line(size = 1.5, alpha = 0.5) +
+  geom_dl(aes(label = species_id), method = list(dl.trans(x = x + 0.1), "last.points"), cex = 1.0) +
+  theme_grey(base_family = "") +
+  theme(axis.text.x = element_text(size = 11, angle = 0),
+        axis.text.y = element_text(size = 11, angle = 0),
+        text = element_text(size = 11),
+        legend.position = "none") +
+  labs(x = "Counts"
+       y = "Time")
+
+```
+
+#Type about what graph said
