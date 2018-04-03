@@ -87,3 +87,28 @@ ggplot(data = yearly_sex_weight, aes(x = year, y = avg_weight, color = species_i
 So there are interspecific differences in mean weight over time. What of intraspecific variance? Males and females for many terrestrial species vary greatly in weight, but what does the data say about intraspecies resilience?
 
 In Figure 2, mean weight was separated out by sex. The authors found that the same species which exhibited interspecific variance, NL, DS, and SH, also exhibited major swings in average weight between males and females. In NL, males were more vulnurable to weight changes, and were faster to gain or lose weight than females. The same can be said for DS and SH. Whether this vulnurability is physiological or behavioral, that is, males willingly forgoing food and giving it to females, is conjecture without further information.
+
+
+# Hindfoot Length: Variations by Species and Sex
+
+The characteristics which differentiate one species from another can also be used to differentiate members of the same sex. In addition to serving as an aid in determining sex, understanding sex-based variation in a characteristic can aid scientists in determining the impact said characteristic has on the success of individuals, especially in matters of reproduction.
+
+Figure 3 contains hex plots for each species for hindfoot length over sex. For most species, the distribution of hindfoot lengths is roughtly the same for both sexes. However, some clear outliers can be seen. For DM, females were found to have a slightly larger range of hindfoot lengths than males, though in both hindfoot length was concentrated at approximatly the same point. OL, meanwhile, was somewhat the reverse of this, with females having a much smaller range than males, with hindfoot lenght more evenly distributed along the range for both sexes.
+
+```{r, fig3, warning=FALSE, echo = FALSE, message=FALSE, fig.width = 7, fig.asp = .6, fig.align = "center", fig.pos = 'h', fig.cap = "Distribution of Hindfoot Lengths by Sex and Species."}
+
+# Load necessary libraries
+library(tidyverse)
+library(directlabels)
+
+# Import data from CSV file
+surveys_complete <- read_csv("data_output/surveys_complete.csv")
+
+# Render a hexplot for each species of hindfoot lengths over sex
+ggplot(data = surveys_complete, aes(x = sex, y = hindfoot_length)) +
+  geom_hex() +
+  facet_wrap(~species_id)
+```
+Aside from sex-based differences, other observations can be inferred. For instance, it is of interest to note that RF, while having approximatly equal ranges in hindfoot length for each sex, has an incredibly small range in comparison to other species. The magnitude of the ranges themselves also vary between species, indicating inter-species variance. Judging by the location of their distribution, PF and RM have the lowest ranges, indicating that they possess the lowest mean hindfoot lengths. DS, meanwhile, possesses the highest range, and thus the highest mean hindfoot length.
+
+Another observation of note is that only in DM did the number of individuals with a particular hindfoot length exceed 3000; specifically, at the center of the range for both sexes, over 3000 individals were detected. For other species, however, hindfoot length appears to be more evenly distributed along the species' range. Why this is the case is not clear by this data alone; further analysis may be required to make sense of this.
