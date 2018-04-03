@@ -19,6 +19,7 @@ abstract: This document is intended to identify data trends and patterns associa
 
 An analysis of inter- and intra-species weights over time can provide details about how animals respond to environmental changes; although no environmental descriptions were given in the dataset, such as food abundancy, assumptions can be made based on the recorded observations.
 
+
 In Figure 1, mean weight for each recorded species is plotted over individual years. Some species show relatively low weight changes, while others display highly varied weights. The authors propose that these animals, NL, DS, and SH, inhabit more specific or more threatened niches than the other survey species.
 
 ```{r, fig1, warning=FALSE, echo = FALSE, message=FALSE, fig.width = 7, fig.asp = .6, fig.align = "center", fig.pos = 'h', fig.cap = "Interspecific mean weight over time."}
@@ -28,6 +29,8 @@ library(tidyverse)
 library(directlabels)
 
 # Import data from CSV file
+
+
 surveys_complete <- read_csv("data_output/surveys_complete.csv")
 
 # Store average weights of species_id by year
@@ -87,3 +90,35 @@ ggplot(data = yearly_sex_weight, aes(x = year, y = avg_weight, color = species_i
 So there are interspecific differences in mean weight over time. What of intraspecific variance? Males and females for many terrestrial species vary greatly in weight, but what does the data say about intraspecies resilience?
 
 In Figure 2, mean weight was separated out by sex. The authors found that the same species which exhibited interspecific variance, NL, DS, and SH, also exhibited major swings in average weight between males and females. In NL, males were more vulnurable to weight changes, and were faster to gain or lose weight than females. The same can be said for DS and SH. Whether this vulnurability is physiological or behavioral, that is, males willingly forgoing food and giving it to females, is conjecture without further information.
+
+```{r}
+# Graph of comparison of species_id and time
+
+
+# Load lib
+library(tidyverse)
+library(directlabels)
+
+# Import data
+surveys_complete <- read_csv("data_output/surveys_complete.csv")
+
+# Store the number of counts of a species over time 
+
+species_id <- surveys_complete %>%
+  group_by(time(), species_id) %>%
+  summarize(time = mean(time))
+
+# Render a plotting counts versus time
+
+ggplot(data = time(), aes(x = counts, y = yearly_counts, color = species_id)) +
+  geom_line(size = 1.5, alpha = 0.5) +
+  geom_dl(aes(label = species_id), method = list(dl.trans(x = x + 0.1), "last.points"), cex = 1.0) +
+  theme_grey(base_family = "") +
+  theme(axis.text.x = element_text(size = 11, angle = 0),
+        axis.text.y = element_text(size = 11, angle = 0),
+        text = element_text(size = 11),
+        legend.position = "none") +
+  labs(x = "Species",
+       y = "Time")
+```       
+       
